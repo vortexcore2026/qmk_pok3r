@@ -22,7 +22,7 @@ Get the source code and build the firmware. Here, I have provided forks with any
 
 ```sh
 # Source code of the firmware (make keymap customizations)
-git clone https://github.com/vortexcore2026/qmk_pok3r.git
+git clone --recursive https://github.com/vortexcore2026/qmk_pok3r.git
 
 # For flashing the binary onto the board
 git clone --recursive https://github.com/vortexcore2026/pok3rtool
