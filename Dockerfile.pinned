@@ -1,0 +1,29 @@
+FROM debian:bookworm-slim
+
+# Pinned ARM GCC toolchain to avoid host distro/toolchain drift.
+ARG ARM_GNU_TOOLCHAIN_ARCHIVE=gcc-arm-none-eabi-7-2018-q2-update-linux.tar.bz2
+ARG ARM_GNU_TOOLCHAIN_DIR=gcc-arm-none-eabi-7-2018-q2-update
+
+ARG ARM_GNU_TOOLCHAIN_URL=https://developer.arm.com/-/media/files/downloads/gnu-rm/7-2018q2/${ARM_GNU_TOOLCHAIN_ARCHIVE}
+
+RUN apt-get update && apt-get install --no-install-recommends -y \
+    bash \
+    bzip2 \
+    ca-certificates \
+    gcc \
+    git \
+    make \
+    unzip \
+    wget \
+    zip \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN wget -O /tmp/${ARM_GNU_TOOLCHAIN_ARCHIVE} ${ARM_GNU_TOOLCHAIN_URL}
+
+RUN mkdir -p /opt && \
+    tar -xf /tmp/${ARM_GNU_TOOLCHAIN_ARCHIVE} -C /opt && \
+    rm -f /tmp/${ARM_GNU_TOOLCHAIN_ARCHIVE}
+
+ENV PATH="/opt/${ARM_GNU_TOOLCHAIN_DIR}/bin:${PATH}"
+
+WORKDIR /qmk
